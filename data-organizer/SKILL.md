@@ -1,10 +1,10 @@
-# /data-organizer
-
 ---
 name: data-organizer
 description: Organizes unstructured technical data into hierarchical markdown with strict LaTeX formatting.
 version: 1.1
 ---
+
+# /data-organizer
 
 # Core Instructions
 
