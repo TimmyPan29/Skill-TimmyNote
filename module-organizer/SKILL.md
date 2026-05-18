@@ -1,3 +1,5 @@
+# /module-organizer
+
 ---
 name: module-organizer
 description: Reorganize and consolidate technical notes from a user-referenced file by merging identical or related concepts into comparison tables, with intuitive guides, cognitive-flow lines, rigorous derivations, and proofs/examples in dedicated sections. Trigger whenever the user asks to organize, consolidate, merge, deduplicate, restructure, or compare technical notes/modules/sections — including loose phrasings like "clean this up", "make a study sheet", "turn these into a comparison", or any reference to a notes file by name without an explicit verb.

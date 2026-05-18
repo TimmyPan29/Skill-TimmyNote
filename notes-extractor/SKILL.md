@@ -1,3 +1,5 @@
+# /notes-extractor
+
 ---
 name: notes-extractor
 description: Extract substantive content (definitions, equations, derivations, examples) from a transcript paired with handwritten-note image(s), cross-check the two sources, correct in-source errors, and emit clean intermediate Markdown ready for the data-organizer skill. Trigger whenever the user provides BOTH a transcript (text/SRT/paste) AND one or more handwritten-note images and asks to extract/transcribe/clean/digitize/process/convert — including loose phrasings like "turn these into notes", "fuse my notes with the recording", "process the lecture + my handwriting", or simply uploads the pair without an explicit verb. Use even when the user does not name the data-organizer skill — this skill is its upstream stage.

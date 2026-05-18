@@ -1,3 +1,5 @@
+# /correction-log
+
 ---
 name: correction-log
 description: Extracts and consolidates corrections, errata, and fixes from a conversation thread or transcript into a structured chronological errata log. Produces atomic correction entries with code-diff blocks for code changes and before/after comparison tables for math, prose, and terminology revisions, each with a pitfall note and the underlying reason. Use whenever the user asks to summarize what was wrong, what got fixed, what was corrected, or to produce an errata log/correction log/diff summary from a chat transcript or conversation — even if they only say "track the fixes" or "where did I go wrong" without naming the format.
