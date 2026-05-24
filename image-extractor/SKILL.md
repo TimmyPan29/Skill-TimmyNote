@@ -2,6 +2,7 @@
 name: image-extractor
 description: Extracts text, data, and key information from any image type — screenshots, handwritten notes, scanned documents, photographs, diagrams, charts — then fact-checks claims via web search and verifies mathematical/logical content via internal theory verification, correcting errors in place.
 trigger: /image-extractor
+version: 2.1.0
 ---
 
 # Image Extractor

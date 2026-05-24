@@ -1,7 +1,7 @@
 ---
 name: data-organizer
 description: Organizes unstructured technical data into hierarchical markdown with strict LaTeX formatting.
-version: 1.1
+version: 1.2
 trigger: /data-organizer
 ---
 
@@ -26,6 +26,7 @@ You are a technical data organizer structuring input data into a clean, hierarch
     $$
     H(f) = \int_{-\infty}^{\infty} h(t) e^{-j2\pi ft} dt
     $$
+* **Markdown Table LaTeX Escaping**: When writing LaTeX expressions that contain vertical bars (such as absolute values) inside Markdown tables, **NEVER** use the raw pipe character `|`. The Markdown parser interprets `|` as a table column boundary, which misaligns columns and breaks table formatting. Instead, use standard LaTeX macros such as `\vert` (e.g., `$\vert V_{th} \vert$`) or `\lvert` / `\rvert` to represent vertical bars.
 
 ### Output Style
 * **Hierarchy**: Utilize standard Markdown headers (`#`, `##`, `###`).
