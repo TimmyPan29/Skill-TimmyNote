@@ -1,8 +1,7 @@
 ---
 name: correction-log
-description: Extracts and consolidates corrections, errata, and fixes from a conversation thread or transcript into a structured chronological errata log. Produces atomic correction entries with code-diff blocks for code changes and before/after comparison tables for math, prose, and terminology revisions, each with a pitfall note and the underlying reason. Use whenever the user asks to summarize what was wrong, what got fixed, what was corrected, or to produce an errata log/correction log/diff summary from a chat transcript or conversation — even if they only say "track the fixes" or "where did I go wrong" without naming the format.
-metadata:
-version: "1.0"
+description: Extracts and consolidates corrections, errata, and fixes from a conversation thread or transcript into a structured chronological errata log. Produces atomic correction entries with code-diff blocks for code changes and before/after comparison tables for math, prose, and terminology revisions, each with a pitfall note and the underlying reason. Also runs as an end-of-session retrospective: opens with a Session Digest that pairs each problem with how it was solved and a Key Takeaways table of commands and concepts to learn next. Use whenever the user asks to summarize what was wrong, what got fixed, what was corrected, to close out / wrap up a session, or to produce an errata log/correction log/diff summary from a chat transcript or conversation — even if they only say "track the fixes", "where did I go wrong", or "what should I learn from this" without naming the format.
+version: 1.1
 trigger: /correction-log
 ---
 
@@ -18,6 +17,7 @@ Activate when the user:
 - References a conversation file with intent to extract where things were revised
 - Asks what was wrong and what is right across a multi-turn exchange
 - Says "track the fixes", "show where I was off", or similar phrasings without naming the format
+- Closes or wraps up a session and wants a recap of problems solved plus what to learn next ("close out this session", "what did we fix and what should I study")
 
 ## When NOT to use
 - Organizing complete, non-erroneous notes into a study module → use `module-organizer`
@@ -75,10 +75,36 @@ Activate when the user:
 * Format: bullet list under `**References:**`.
 * Deduplicate identical links. A link cited only inside a single correction stays scoped to that correction.
 
+## Session Digest (End-of-Session Mode)
+
+When the user closes or wraps up a session, prepend a **Session Digest** above the individual corrections. The digest is the at-a-glance layer; the correction entries remain the detailed evidence. Build it from the same corrections plus any problem the thread resolved without a textual replacement (e.g., a config change or an environment fix).
+
+1. **Problems & Resolutions table**: One row per distinct problem solved, ordered by when it was solved. Columns: `#`, `Problem`, `Root cause`, `Fix that worked`, `Status`, `Ref`. The `Ref` cell links to the backing entry (e.g., `Correction 3`); use `—` when no atomic entry exists. State the root cause, not the symptom — apply the 5 Whys when the thread supports it. If the thread never converged, mark `Status` as `Unresolved` and say so plainly.
+2. **Key Takeaways table**: The study layer — the points, commands, or concepts worth carrying forward. Columns: `Key point / command`, `What it does`, `When to use`, `Pitfall to avoid`. Derive each row from the `Pitfall` and `Why` of a correction so the lesson generalizes beyond the one bug. Put literal commands in backticks in the first cell (e.g., `np.divide(..., where=)`).
+3. **Concrete-change rule**: Every takeaway is an actionable rule or command, never vague advice. Reject "be more careful with inverses" — write "use `np.linalg.pinv` for non-square `H`; the normal-equations form needs the trailing `H.T`."
+4. **Scope**: Derive the digest only from the thread. Do not invent problems, commands, or lessons that were never discussed. An empty session (no corrections) yields no digest — say so rather than padding the tables.
+
 ## Output Blueprint
 
 ```
 # Correction Log: [Source Identifier]
+
+## Session Digest
+<!-- Include only in end-of-session mode. -->
+
+### Problems & Resolutions
+
+| # | Problem | Root cause | Fix that worked | Status | Ref |
+| :-- | :--- | :--- | :--- | :--- | :--- |
+| 1 | [What broke] | [Why it broke, not the symptom] | [The change that resolved it] | Resolved | Correction 1 |
+
+### Key Takeaways — Commands & Concepts to Learn
+
+| Key point / command | What it does | When to use | Pitfall to avoid |
+| :--- | :--- | :--- | :--- |
+| `command or concept` | [One-line function] | [Trigger condition] | [The trap to dodge] |
+
+---
 
 ## Correction 1: [Short Title]
 
@@ -108,6 +134,24 @@ Flow: [Premise] -> [Correction] -> [Principle]
 ```
 
 ## Worked Patterns
+
+### Session Digest Example
+
+Grounded in the chained `np.divide` debugging example further below (Corrections 1–2).
+
+#### Problems & Resolutions
+
+| # | Problem | Root cause | Fix that worked | Status | Ref |
+| :-- | :--- | :--- | :--- | :--- | :--- |
+| 1 | Equalizer returned NaN at zero-channel entries | Division by zero in `Y / H`; `np.where` still evaluates both branches eagerly | Gate the division at the ufunc level: `np.divide(Y, H, out=result, where=(H != 0))` | Resolved | Corrections 1–2 |
+
+#### Key Takeaways — Commands & Concepts to Learn
+
+| Key point / command | What it does | When to use | Pitfall to avoid |
+| :--- | :--- | :--- | :--- |
+| `np.divide(a, b, out=, where=)` | Masked division — skips the compute where the mask is `False` | Any elementwise op that can hit divide-by-zero or invalid input | `np.where(mask, a/b, 0)` does **not** guard; both branches run before the mask applies |
+
+---
 
 ### Code Correction Example
 
